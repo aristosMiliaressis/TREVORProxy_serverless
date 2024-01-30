@@ -42,7 +42,7 @@ locals {
   EOT
 }
 
-resource "null_resource" "build_push_dkr_img" {
+resource "null_resource" "build_dkr_img" {
   triggers = {
     detect_docker_source_changes = local.dkr_img_src_sha256
   }
@@ -54,4 +54,8 @@ resource "null_resource" "build_push_dkr_img" {
 resource "docker_registry_image" "proxy_server" {
   name          = "${aws_ecr_repository.proxy_server.repository_url}:${local.image_tag}"
   keep_remotely = true
+
+  depends_on = [
+    null_resource.build_dkr_img
+  ]
 }
