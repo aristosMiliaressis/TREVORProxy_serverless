@@ -1,0 +1,3 @@
+boto3
+threadlocal_aws
+trevorproxy
