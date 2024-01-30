@@ -1,17 +1,21 @@
-TREVORproxy-serverless
+TREVORproxy_serverless
 ==
 
 <br/>
 
 Sets up an autoscaling fargate cluster of SOCKS proxies to use along with [TREVORproxy](https://github.com/blacklanternsecurity/TREVORproxy).
 
-the `proxy.py` command puts a `proxy-intent` message in an sqs queue which causes the proxy cluster to scale up if it is not already up.
+`trevorproxy_serverless` puts a `proxy-intent` message in an sqs queue which causes the proxy cluster to scale up if it is not already up.
 
-when stopped `proxy.py` deletes the `proxy-intent` message to signal that it does not need the proxies anymore.
+when stopped `trevorproxy_serverless` deletes the `proxy-intent` message to signal that it does not need the proxies anymore.
 
 the sqs queue has a message retention limit which acts as a hard timeout to prevent proxies from running too long.
 
-the message retention & proxy count can be adjusted trough [terraform variables](https://github.com/aristosMiliaressis/TREVORproxy-serverless/blob/master/infra/variables.tf).
+the message retention & proxy count can be adjusted trough [terraform variables](https://github.com/aristosMiliaressis/TREVORproxy_serverless/blob/master/infra/variables.tf).
+
+<p align="center">
+  <img src="https://github.com/aristosMiliaressis/TREVORproxy_serverless/blob/master/img/demo.png?raw=true">
+</p>
 
 <br/>
 
@@ -21,13 +25,16 @@ the message retention & proxy count can be adjusted trough [terraform variables]
 - docker
 - jq
 
-**Dependencies for proxy.py**
-- [TREVORproxy](https://github.com/blacklanternsecurity/TREVORproxy).
+<br/>
 
+**trevorproxy_serverless Installation**
+```bash
+$ pip install trevorproxy_serverless
+```
 
-<p align="center">
-  <img src="https://github.com/aristosMiliaressis/TREVORproxy-serverless/blob/master/img/demo.png?raw=true">
-</p>
+<br/>
+
+**Notes**
 
 Cost of one proxy instance running for an hour is 0,012$.
 
@@ -40,5 +47,5 @@ EU (Stockholm),
 Asia Pacific (Tokyo)
 
 <p align="center">
-  <img src="https://github.com/aristosMiliaressis/TREVORproxy-serverless/blob/master/img/cost_calc.png?raw=true">
+  <img src="https://github.com/aristosMiliaressis/TREVORproxy_serverless/blob/master/img/cost_calc.png?raw=true">
 </p>

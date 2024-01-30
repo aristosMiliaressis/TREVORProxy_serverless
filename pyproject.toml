@@ -1,0 +1,21 @@
+[project]
+name = "trevorproxy_serverless"
+version = "0.0.1"
+description = "TREVORproxy wrapper that integrates with aws fargate based proxy cluster"
+readme = "README.md"
+requires-python = ">=3.6"
+dependencies = [
+  "boto3",
+  "threadlocal_aws",
+  "trevorproxy",
+]
+
+[project.scripts]
+trevorproxy_serverless = "trevorproxy_serverless.cli:main"
+
+[project.urls]
+"repository" = "https://github.com/aristosMiliaressis/TREVORproxy_serverless/"
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
