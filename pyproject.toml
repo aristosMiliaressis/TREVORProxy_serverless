@@ -1,6 +1,6 @@
 [project]
 name = "trevorproxy_serverless"
-version = "0.0.1"
+version = "0.0.2"
 description = "TREVORproxy wrapper that integrates with aws fargate based proxy cluster"
 readme = "README.md"
 requires-python = ">=3.6"

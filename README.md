@@ -3,15 +3,16 @@ TREVORproxy_serverless
 
 <br/>
 
-Sets up an autoscaling fargate cluster of SOCKS proxies to use along with [TREVORproxy](https://github.com/blacklanternsecurity/TREVORproxy).
+Sets up an autoscaling cluster of SOCKS proxies to use along with [TREVORproxy](https://github.com/blacklanternsecurity/TREVORproxy).
 
-`trevorproxy_serverless` puts a `proxy-intent` message in an sqs queue which causes the proxy cluster to scale up if it is not already up.
+- `trevorproxy_serverless` uses an SQS queue to control the autoscaling of the proxy cluster
+- as long as there is a `proxy-intent` message in the queue the cluster will stay up.
+- when running the cli it adds a message to the queue to signal it needs a running cluster of proxies
+- when the cli terminates gracefully it removes the message from the queue
+- if the cli is terminated non gracefully, the message will remain in the queue until the message retention period of the queue passes
+- while the cli is running it is using a sliding window approach to ensure the proxy intent message will not expire while the cli is running.
 
-when stopped `trevorproxy_serverless` deletes the `proxy-intent` message to signal that it does not need the proxies anymore.
-
-the sqs queue has a message retention limit which acts as a hard timeout to prevent proxies from running too long.
-
-the message retention & proxy count can be adjusted trough [terraform variables](https://github.com/aristosMiliaressis/TREVORproxy_serverless/blob/master/infra/variables.tf).
+the proxy count can be adjusted trough [terraform variables](https://github.com/aristosMiliaressis/TREVORproxy_serverless/blob/master/infra/variables.tf).
 
 <p align="center">
   <img src="https://github.com/aristosMiliaressis/TREVORproxy_serverless/blob/master/img/demo.png?raw=true">

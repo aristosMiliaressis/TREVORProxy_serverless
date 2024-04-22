@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $1 == "create" ]]
+if [[ $1 == "up" ]]
 then
     mkdir ~/.ssh 2>/dev/null
     [[ ! -f ~/.ssh/trevorproxy ]] && ssh-keygen -t ed25519 -f ~/.ssh/trevorproxy -C trevorproxy -N ""
@@ -8,10 +8,10 @@ then
 
     terraform -chdir=infra init
     terraform -chdir=infra apply -auto-approve -var "public_key=$public_key"
-elif [[ $1 == "destroy" ]]
+elif [[ $1 == "down" ]]
 then
     terraform -chdir=infra destroy -auto-approve -var "public_key="
 else
-    echo "USAGE: $0 [create | destroy]"
+    echo "USAGE: $0 [up | down]"
 fi
 
