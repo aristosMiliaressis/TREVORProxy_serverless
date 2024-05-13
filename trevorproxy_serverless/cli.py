@@ -21,6 +21,7 @@ def terminate(sig, frame):
 
 def send_proxy_intent():
     global message_id
+    print('Sending proxy intent.')
     dedup_id = str(uuid.uuid4())
     message_id = queue.send_message(MessageBody='{}', 
             MessageDeduplicationId=dedup_id,
@@ -46,7 +47,7 @@ def main():
     session = boto3.Session()
     sqs = session.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName='proxy-intents.fifo')
-    send_proxy_intent(queue)
+    send_proxy_intent()
     
     # setup graceful termination to remove proxy-intent message
     signal.signal(signal.SIGINT, terminate)
@@ -54,7 +55,8 @@ def main():
     
     # sliding window, to ensure messages don't expire while the tool is running
     interval = int(queue.attributes['MessageRetentionPeriod']) / 2
-    threading.Timer(interval, send_proxy_intent).start()
+    timer = threading.Timer(interval, send_proxy_intent)
+    timer.start()
 
     ecs_client = ecs()
     cluster = ecs_client.describe_clusters(clusters=['proxy-cluster'])['clusters'][0]
@@ -81,3 +83,6 @@ def main():
     sys.argv = trevorArgs
 
     trevorproxy()
+
+if __name__ == "__main__":
+    main()

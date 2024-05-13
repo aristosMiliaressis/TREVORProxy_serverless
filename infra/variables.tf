@@ -9,7 +9,7 @@ variable "message_retention_seconds" {
   description = "The SQS message retention in seconds (serves as hard timeout for proxy intent messages)."
   type        = number
 
-  default = 1200 # 20 minutes
+  default = 900 # 15 minutes
 }
 
 variable "proxy_count" {
